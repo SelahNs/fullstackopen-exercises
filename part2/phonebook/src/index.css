@@ -1,0 +1,15 @@
+.error {
+  color: green;
+  background-color: silver;
+  border-style: solid;
+  border-color: #008000;
+  border-radius: 5px;
+  font-size: 20px;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+.red {
+  color: red;
+  border-color: #800000;
+}
