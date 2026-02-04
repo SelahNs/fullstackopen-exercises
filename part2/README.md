@@ -7,4 +7,4 @@ The exercises are organized into separate Vite + React projects.
 
 * [**Course Info (Exercises  2.1 - 2.5)**](./courseinfo).
 * [**The Phonebook (Exercises 2.6 - 2.17)**](./phonebook).
-* [**Data for Coutries (Exercises 2.18 - 2.20)**](./countries).
+* [**Data for Coutries (Exercises 2.18 - 2.20)**](./data-for-countries).
