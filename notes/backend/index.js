@@ -46,7 +46,7 @@ app.get('/api/notes', (request, response) => {
 app.get('/api/notes/:id', (request, response) => {
   const id = request.params.id;
   const note = notes.find(note => note.id === id);
-  if (notes) {
+  if (note) {
   response.json(note);
   } else {
     response.status(404).end();
@@ -75,7 +75,7 @@ app.post('/api/notes', (request, response) => {
   response.json(note);
 })
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
     console.log(`The server started on the port ${PORT}.`);
