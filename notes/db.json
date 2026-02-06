@@ -13,6 +13,11 @@
     {
       "id": "3",
       "content": "GET and POST are the most important methods of HTTP protocol",
+      "important": false
+    },
+    {
+      "id": "be18",
+      "content": "POST is used for creating new resources.",
       "important": true
     }
   ]
