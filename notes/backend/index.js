@@ -29,6 +29,7 @@ let notes = [
 // })
 
 app.use(express.json());
+app.use(express.static('dist'));
 
 const gerateId = () => {
   const maxNum = notes.length > 0 ? Math.max(...notes.map(n => Number(n.id))) : 0 ;
