@@ -9,3 +9,7 @@ Content-Type: application/json
     "number": "09-9038405",
     "name": "john dalton"
 }
+
+###
+
+Get http://localhost:3001/info
