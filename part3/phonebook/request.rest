@@ -2,12 +2,12 @@ DELETE https://fullstackopen-exercises-2-8qix.onrender.com/api/persons/2
 
 ###
 
-POST https://fullstackopen-exercises-2-8qix.onrender.com/api/persons
+POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-    "number": "09-9038405",
-    "name": "john dalton"
+    "number": "0-9038405",
+    "name": "john becham"
 }
 
 ###

@@ -33,6 +33,9 @@ app.get("/info", (request, response, next) => {
 
 app.get('/api/persons/:id', (request, response, next) => {
     Person.findById(request.params.id).then(result => {
+        if (!result) {
+            return response.status(404).end()
+        }
         response.json(result);
     })
     .catch(error => next(error))
@@ -70,21 +73,28 @@ app.post('/api/persons', (request, response, next) => {
 })
 
 app.put('/api/persons/:id', (request, response, next)=> {
-    const {name, number} = request.body;
-    Person.findById(request.params.id).then(note => {
-        note.name = name;
-        note.number = number;
+    const body = request.body;
+    Person.findById(request.params.id).then(person => {
+        if (person) {
+            if(body.name) person.name = body.name;
+            if (body.number) person.number = body.number;
 
-        note.save().then(updatedNote => response.json(updatedNote))
+             return person.save()
+        } else {
+            response.status(404).end()
+        }
+        
+
+    }).then(updatedPerson => response.json(updatedPerson))
         .catch(error => next(error))
-
-    })
 })
 
 const errorHandler = (error, request, response, next) => {
     console.error(error.message)
     if (error.name === 'CastError') {
-        return response.status(404).send({error: "misformated id"})
+        return response.status(400).send({error: "misformated id"})
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({error: error.message});
     }
 
     next(error)
