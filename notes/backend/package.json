@@ -4,16 +4,17 @@
   "description": "My first Node backend",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
     "build:ui": "rm -rf dist && cd ../frontend && npm run build && cp -r dist ../backend",
     "deploy:full": "npm run build:ui && cd .. && git add . && git commit -m uibuild && git push",
-    "dev": "node --watch index.js",
-    "test": "node --test",
+    "dev": "cross-env NODE_ENV=devlopment node --watch index.js",
+    "test": "cross-env NODE_ENV=test node --test",
     "lint": "eslint"
   },
   "author": "Selah",
   "license": "MIT",
   "dependencies": {
+    "cross-env": "^10.1.0",
     "dotenv": "^17.2.4",
     "express": "^5.2.1",
     "mongoose": "^9.1.6"
