@@ -35,7 +35,7 @@ const App = () => {
     e.preventDefault();
     const isAvailable = persons.some(person => person.name === newName);
     if (isAvailable) {
-      const confirm = window.confirm(`${newName} is already added to the phonebook`);
+      const confirm = window.confirm(`${newName} is already added to the phonebook. Do you want to replace that?`);
       if (confirm) {
         const newObject = { name: newName, number: newNumber };
         phoneService.update(persons.find(person => person.name == newName).id, newObject).then(response => setPersons(persons.map(person => {
@@ -63,6 +63,13 @@ const App = () => {
             setMessage(null)
           }, 1500)
 
+        }).catch(error => {
+          setMessage(error.response.data.error);
+          setColor('red');
+          setTimeout(() => {
+            setMessage(null);
+            setColor(null);
+          }, 3000)
         })
 
 
