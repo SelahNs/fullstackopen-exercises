@@ -24,13 +24,13 @@ test('getting all blogs', async () => {
   assert(response[0].id)
 })
 
-test.only('making post request', async () => {
-  const newBlog = new Blog({
+test('making post request', async () => {
+  const newBlog = {
       title: "React functions",
       author: "Michael Chan",
       url: "https://reactfunctions.com/",
       likes: 17,
-  })
+  }
   await api
   .post('/api/blogs')
   .send(newBlog)
@@ -41,6 +41,36 @@ test.only('making post request', async () => {
   assert.strictEqual(after.length , helper.initialBlogs.length + 1)
 })
 
+test.only('if likes property is missing it will default to zero', async () => {
+  const newBlog = {
+      title: "React functions",
+      author: "Michael Chan",
+      url: "https://reactfunctions.com/",
+  }
+  const response = await api
+  .post('/api/blogs')
+  .send(newBlog)
+  .expect(201)
+  .expect('Content-Type', /application\/json/)
+
+  const after = await helper.blogsInDb()
+  assert.strictEqual(after.length , helper.initialBlogs.length + 1)
+  assert.strictEqual(response.body.likes, 0);
+})
+
+test('if the title of url are missing the request will return 400', async() => {
+  const newBlog = new Blog({
+      title: "React functions",
+      author: "Michael Chan",
+  })
+  await api
+  .post('/api/blogs')
+  .send(newBlog)
+  .expect(400)
+
+  const after = await helper.blogsInDb()
+  assert.strictEqual(after.length , helper.initialBlogs.length)
+} )
 
 after(async ()=> {
   await mongoose.connection.close()
