@@ -36,13 +36,13 @@ test('notes are returned as json', async () => {
 test('all notes are returned', async () => {
   const response = await api.get('/api/notes')
 
-  assert.strictEqual(response.body.length, intialNotes.length)
+  assert.strictEqual(response.body.length, initialNotes.length)
 })
 
 test('a specific note is within the retruned notes', async () => {
   const response = await api.get('/api/notes')
 
-  const contents = resonse.body.map(e => e.content)
+  const contents = response.body.map(e => e.content)
   assert.strictEqual(contents.includes('HTML is easy'), true)
 })
 
@@ -58,7 +58,7 @@ test('a valid note can be added', async () => {
   .expect(201)
   .expect('Content-Type', /application\/json/)
 
-  const response = await api.get('api/notes')
+  const response = await api.get('/api/notes')
 
   const contents = response.body.map(r => r.content)
 
