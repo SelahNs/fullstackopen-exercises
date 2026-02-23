@@ -9,7 +9,7 @@ const helper = require('./test_helper')
 
 beforeEach(async() => {
   await Blog.deleteMany({})
-  Blog.insertMany(helper.initialBlogs)
+  await Blog.insertMany(helper.initialBlogs)
 })
 
 test('getting all blogs', async () => {
@@ -41,7 +41,7 @@ test('making post request', async () => {
   assert.strictEqual(after.length , helper.initialBlogs.length + 1)
 })
 
-test.only('if likes property is missing it will default to zero', async () => {
+test('if likes property is missing it will default to zero', async () => {
   const newBlog = {
       title: "React functions",
       author: "Michael Chan",
@@ -59,10 +59,10 @@ test.only('if likes property is missing it will default to zero', async () => {
 })
 
 test('if the title of url are missing the request will return 400', async() => {
-  const newBlog = new Blog({
+  const newBlog = {
       title: "React functions",
       author: "Michael Chan",
-  })
+  }
   await api
   .post('/api/blogs')
   .send(newBlog)
@@ -71,6 +71,17 @@ test('if the title of url are missing the request will return 400', async() => {
   const after = await helper.blogsInDb()
   assert.strictEqual(after.length , helper.initialBlogs.length)
 } )
+
+test.only('deleting succeeds with status code 204 if id is valid', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToDelete = blogsAtStart[0]
+      console.log(blogsAtStart)
+      await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+      const blogsAtEnd = await helper.blogsInDb()
+
+      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
+    })
 
 after(async ()=> {
   await mongoose.connection.close()

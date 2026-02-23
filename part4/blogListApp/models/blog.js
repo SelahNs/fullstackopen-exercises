@@ -7,7 +7,7 @@ const blogSchema = mongoose.Schema({
   likes: Number,
 })
 
-mongoose.set('toJSON', {
+blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id
