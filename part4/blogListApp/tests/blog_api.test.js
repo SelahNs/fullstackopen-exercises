@@ -72,7 +72,7 @@ test('if the title of url are missing the request will return 400', async() => {
   assert.strictEqual(after.length , helper.initialBlogs.length)
 } )
 
-test.only('deleting succeeds with status code 204 if id is valid', async () => {
+test('deleting succeeds with status code 204 if id is valid', async () => {
       const blogsAtStart = await helper.blogsInDb()
       const blogToDelete = blogsAtStart[0]
       console.log(blogsAtStart)
@@ -82,6 +82,17 @@ test.only('deleting succeeds with status code 204 if id is valid', async () => {
 
       assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
     })
+
+test.only('updating likes shoudl return 200', async () => {
+  const BlogsAtStart = await helper.blogsInDb()
+  const BlogToModify = {...BlogsAtStart[0], likes: 100};
+  const response = await api
+    .put(`/api/blogs/${BlogToModify.id}`)
+    .send(BlogToModify)
+    .expect(200)
+
+  assert.deepStrictEqual(BlogToModify, response.body)
+})
 
 after(async ()=> {
   await mongoose.connection.close()
