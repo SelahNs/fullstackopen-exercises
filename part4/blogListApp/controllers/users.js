@@ -4,6 +4,10 @@ const bcrypt = require('bcrypt')
 
 userRouter.post('/', async (request, response) =>{
   const {username, name, password} = request.body
+  
+  if (password.length < 3) {
+    return response.status(400).json({error: "invalid password"})
+  }
 
   const saltRounds = 10
 
@@ -20,7 +24,7 @@ userRouter.post('/', async (request, response) =>{
 })
 
 userRouter.get('/', async (request, response) => {
-  const values = await User.find({})
+  const values = await User.find({}).populate('blogs')
   response.json(values)
 })
 
