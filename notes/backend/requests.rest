@@ -8,3 +8,22 @@ Content-Type: application/json
     "content": "do not forget to set the correct content type",
     "important": true
 }
+
+###
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+"username": "first",
+"password": "123"
+}
+
+###
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+"username": "first",
+"password": "123",
+"name": "test"
+}
