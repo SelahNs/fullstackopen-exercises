@@ -1,7 +1,16 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog');
 const User = require('../models/users')
+const jwt = require('jsonwebtoken')
 
+const getToken = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
+  }
+
+  return null
+}
 
 blogRouter.get('/', async (request, response,next) => {
   const blogs = await Blog.find({}).populate('user')
@@ -10,13 +19,19 @@ blogRouter.get('/', async (request, response,next) => {
 
 blogRouter.post('/', async (request, response) => {
   const blog = new Blog(request.body)
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  
+  const user = await User.findById(decodedToken.id)
+
   if (!(blog.url && blog.title)) {
     return response.status(400).send({error: 'missing properies'})
   }
   if (!blog.likes) {
     blog.likes = 0
   }
-  const user = await User.find({})
   blog.user = user[0]._id
   const result = await blog.save()
   response.status(201).json(result)
